@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>signup</title>
+    <%- include("./partial/header") %>
+</head>
+
+<body>
+    <form id="signupform" class="mx-auto mt-5" style="width: 700px;" method="POST" action="/auth/signup">
+        <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">username</label>
+            <input type="text" name="username" id="username" class="form-control" id="exampleInputUsername1">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">password</label>
+            <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3">
+            <span>do You have account? <a href="/auth/signin">signin</a></span>
+        </div>
+        <% if (error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%=error%>
+        </div>
+        <% } %>
+        <button type="submit" class="btn btn-primary w-100">Signup</button>
+    </form>
+
+    <% if (successful) { %>
+    <script>
+        window.location.href = '/auth/signin'
+    </script>
+    <% } %>
+
+    <script>
+        let cache = localStorage.getItem("signupCache")
+        if (cache) {
+            let info = JSON.parse(cache)
+            document.getElementById("username").value = info.username;
+            document.getElementById("password").value = info.password;
+        }
+        document.getElementById('signupform').addEventListener("submit", (e) => {
+            localStorage.setItem("signupCache", JSON.stringify({
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value
+            }))
+        })
+    </script>
+</body>
+
+</html>
